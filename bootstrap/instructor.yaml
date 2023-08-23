@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: instructor-app
-  namespace: instructor
+  namespace: argocd
 spec:
   destination:
     name: paasis-dev

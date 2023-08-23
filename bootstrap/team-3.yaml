@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: team-3-app
-  namespace: team-3
+  namespace: argocd
 spec:
   destination:
     name: paasis-dev
