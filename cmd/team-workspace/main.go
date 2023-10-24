@@ -67,16 +67,9 @@ func createRepository(name string) {
 		Private: github.Bool(true),
 	}
 	ctx := context.Background()
-	repository, _, err := gitHubClient.Repositories.Create(ctx, "ionos-cloud", repo)
+	_, _, err := gitHubClient.Repositories.Create(ctx, "ionos-cloud", repo)
 	if err != nil {
 		panic(errors.Wrap(err, "creating repository"))
-	}
-	opts := &github.RepositoryAddCollaboratorOptions{
-		Permission: "admin",
-	}
-	_, _, err = gitHubClient.Repositories.AddCollaborator(ctx, "ionos-cloud", *repository.Name, "ionos-cloud", opts)
-	if err != nil {
-		panic(errors.Wrap(err, "adding ionos-cloud as collaborator"))
 	}
 }
 
