@@ -5,4 +5,4 @@
 #  -H "Authorization: Bearer $IONOS_TOKEN" | jq
 
 
-curl -v localhost:8080/quotas | jq
+curl -v localhost:8080/quotas -H "Authorization: Bearer $IONOS_TOKEN" | jq

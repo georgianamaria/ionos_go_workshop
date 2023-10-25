@@ -2,29 +2,39 @@ package main
 
 import (
 	"encoding/json"
-	"io"
 	"log/slog"
 	"net/http"
-	"os"
+	"workshop_demo/client"
+	"workshop_demo/model"
 )
-
-const token = ""
 
 func main() {
 
 	http.HandleFunc("/quotas",
 		func(w http.ResponseWriter, r *http.Request) {
-			dbaasQuotas := DBaaSQuotas()
-			dnsResponse := DNSQuotas()
+			token := r.Header.Get("Authorization")
 
-			serverResponse := ServerResponse{
-				DBaaSResponse: dbaasQuotas,
-				DNSResponse:   dnsResponse,
+			dbaasQuotas, err := client.DBaaSQuotas(token)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				slog.Error("Error while getting DBaaS quotas: ", err)
+				return
 			}
+
+			dnsResponse, err := client.DNSQuotas(token)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				slog.Error("Error while getting DNS quotas: ", err)
+				return
+			}
+
+			serverResponse := convertModels(*dnsResponse, *dbaasQuotas)
 
 			jsonBody, err := json.Marshal(serverResponse)
 			if err != nil {
-				panic(err)
+				w.WriteHeader(http.StatusInternalServerError)
+				slog.Error("Error while marshaling response: ", err)
+				return
 			}
 
 			w.WriteHeader(http.StatusOK)
@@ -32,75 +42,22 @@ func main() {
 		},
 	)
 
-	http.ListenAndServe("localhost:8080", nil)
+	println("starting server")
+	http.ListenAndServe(":8080", nil)
 }
 
-func DNSQuotas() DNSResponse {
-	request2, err := http.NewRequest(http.MethodGet, "https://dns.de-fra.ionos.com/quota", nil)
-	request2.Header.Add("Authorization", "Bearer "+os.Getenv("IONOS_TOKEN"))
-
-	response2, err := http.DefaultClient.Do(request2)
-	var responseObject2 DNSResponse
-	body2, err := io.ReadAll(response2.Body)
-
-	err = json.Unmarshal(body2, &responseObject2)
-	if err != nil {
-		panic(err)
+func convertModels(
+	dns client.DNSResponse,
+	dbaas client.DBaaSResponse,
+) model.ServerResponse {
+	return model.ServerResponse{
+		DNSResponse: model.Quota[model.DNSQuota]{
+			Limit: dns.QuotaLimits,
+			Usage: dns.QuotaUsage,
+		},
+		DBaaSResponse: model.Quota[model.DatabaseQuota]{
+			Limit: dbaas.QuotaLimits,
+			Usage: dbaas.QuotaUsage,
+		},
 	}
-	return responseObject2
-}
-
-func DBaaSQuotas() DBaaSResponse {
-	request, _ := http.NewRequest(
-		http.MethodGet,
-		"https://api.ionos.com/databases/quota",
-		nil,
-	)
-	request.Header.Add("Authorization", "Bearer "+os.Getenv("IONOS_TOKEN"))
-
-	response, err := http.DefaultClient.Do(request)
-	if err != nil {
-		slog.Error("Error in response")
-		panic(err)
-	}
-	body, err := io.ReadAll(response.Body)
-
-	var responseObject DBaaSResponse
-	_ = json.Unmarshal(body, &responseObject)
-	return responseObject
-}
-
-type DBaaSResponse struct {
-	QuotaUsage struct {
-		CountMongoclustersDbaasIonosCom    string `json:"count/mongoclusters.dbaas.ionos.com"`
-		CountPostgresclustersDbaasIonosCom string `json:"count/postgresclusters.dbaas.ionos.com"`
-		Cpu                                string `json:"cpu"`
-		Memory                             string `json:"memory"`
-		Storage                            string `json:"storage"`
-	} `json:"quotaUsage"`
-	QuotaLimits struct {
-		CountMongoclustersDbaasIonosCom    string `json:"count/mongoclusters.dbaas.ionos.com"`
-		CountPostgresclustersDbaasIonosCom string `json:"count/postgresclusters.dbaas.ionos.com"`
-		Cpu                                string `json:"cpu"`
-		Memory                             string `json:"memory"`
-		Storage                            string `json:"storage"`
-	} `json:"quotaLimits"`
-}
-
-type DNSResponse struct {
-	QuotaLimits struct {
-		Records        int `json:"records"`
-		SecondaryZones int `json:"secondaryZones"`
-		Zones          int `json:"zones"`
-	} `json "quotaLimits"`
-	QuotaUsage struct {
-		Records        int `json:"records"`
-		SecondaryZones int `json:"secondaryZones"`
-		Zones          int `json:"zones"`
-	} `json: "quotaUsage"`
-}
-
-type ServerResponse struct {
-	DBaaSResponse DBaaSResponse `json:"dbaas"`
-	DNSResponse   DNSResponse   `json:"dns"`
 }

@@ -252,7 +252,5 @@ FodyWeavers.xsd
 *.msm
 *.msp
 *.sln.iml
-/.idea/si-workshop.iml
-/.idea/modules.xml
-/.idea/.gitignore
-/.idea/vcs.xml
+
+.helper-sheet
