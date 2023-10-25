@@ -1,0 +1,6 @@
+---
+package: quotav1
+generate:
+  chi-server: true
+  models: true
+  embedded-spec: true
