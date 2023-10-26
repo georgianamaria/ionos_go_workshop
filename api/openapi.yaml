@@ -1,0 +1,114 @@
+---
+openapi: 3.0.3
+info:
+  title: Quotas Service
+  description: Fetches aggregated quotas for a given account from the IONOS Cloud API
+  version: 0.1.0
+servers:
+  - url: 'http://localhost:3333'
+
+paths:
+
+  /quotas:
+    get:
+      description: Fetches aggregated quotas for a given account from the IONOS Cloud API
+      operationId: getQuotas
+      security:
+        - ionos-token: []
+      responses:
+        '200':
+          $ref: '#/components/responses/Quotas'
+        '401':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+
+  /health:
+    get:
+      description: Health check
+      operationId: getHealth
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                enum:
+                  - OK
+        '500':
+          $ref: '#/components/responses/Error'
+
+components:
+  responses:
+    Quotas:
+      description: Accumulated quotas for all services
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Quotas'
+    Error:
+      description: API call error
+      content:
+        text/plain:
+          schema:
+            type: string
+
+  securitySchemes:
+    ionos-token:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Quotas:
+      type: object
+      properties:
+        DBaaS:
+          type: object
+          properties:
+            Usage:
+              $ref: '#/components/schemas/DBaaSQuota'
+            Limits:
+              $ref: '#/components/schemas/DBaaSQuota'
+        DNS:
+          type: object
+          properties:
+            Usage:
+              $ref: '#/components/schemas/DNSQuota'
+            Limits:
+              $ref: '#/components/schemas/DNSQuota'
+
+    DBaaSQuota:
+      type: object
+      properties:
+        MongoClusters:
+          type: integer
+          format: int64
+        PostgresClusters:
+          type: integer
+          format: int64
+        CPU:
+          type: integer
+          format: int64
+        Memory:
+          type: integer
+          format: int64
+        Storage:
+          type: integer
+          format: int64
+
+    DNSQuota:
+      type: object
+      required:
+        - Zones
+      properties:
+        Zones:
+          type: integer
+          format: int64
+        Records:
+          type: integer
+          format: int64
+        SecondaryZones:
+          type: integer
+          format: int64

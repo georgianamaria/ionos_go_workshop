@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quota-deployment
+  namespace: team-5
+  labels:
+    app: quota
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quota
+  template:
+    metadata:
+      labels:
+        app: quota    
+    spec:
+      imagePullSecrets:
+      - name: docker-pull-secret
+      containers:
+      - name: quota
+        image: harbor.infra.cluster.ionos.com/paasis-dev/wb-group2/team-5:latest
+        ports:
+        - containerPort: 8080

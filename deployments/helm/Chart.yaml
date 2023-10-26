@@ -1,0 +1,5 @@
+apiVersion: v2
+name: quota-service-workshop
+description: Example Quota Service
+type: application
+version: 0.0.0

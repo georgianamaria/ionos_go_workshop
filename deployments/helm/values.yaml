@@ -1,0 +1,4 @@
+imagePullSecret: unknown
+
+image:
+  pullSecrets: docker-pull-secret
