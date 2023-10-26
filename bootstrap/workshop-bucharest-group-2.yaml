@@ -5,7 +5,7 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    name: workshop-bucharest-group-2-mspoeri
+    name: paasis-dev
     namespace: bg-2-mspoeri
   project: paasis-dev-paasis
   source:
