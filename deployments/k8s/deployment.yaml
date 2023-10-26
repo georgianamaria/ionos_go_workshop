@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: quota-deployment
+  name: quota-deployment_team5
   namespace: team-5
   labels:
     app: quota
