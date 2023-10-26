@@ -9,7 +9,7 @@ spec:
     namespace: bg-2-mspoeri
   project: paasis-dev-paasis
   source:
-    repoURL: https://github.com/ionos-cloud/si-demo-arsys.git
+    repoURL: https://github.com/mspoeri/deployment-test
     targetRevision: main
     path: deployments/k8s
   syncPolicy:
