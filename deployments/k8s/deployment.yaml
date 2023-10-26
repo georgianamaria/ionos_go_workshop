@@ -16,7 +16,7 @@ spec:
         app: quota    
     spec:
       imagePullSecrets:
-      - name: docker-pull-secret
+      - name: harbor-pull-secret
       containers:
       - name: quota
         image: harbor.infra.cluster.ionos.com/paasis-dev/wb-group2/team-5:latest
