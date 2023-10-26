@@ -1,3 +1,0 @@
-//go:generate
-
-package server
