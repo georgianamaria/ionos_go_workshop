@@ -65,20 +65,10 @@ components:
       type: object
       properties:
         DBaaS:
-          type: object
-          properties:
-            Usage:
-              $ref: '#/components/schemas/DBaaSQuota'
-            Limits:
-              $ref: '#/components/schemas/DBaaSQuota'
+          $ref: '#/components/schemas/DBaaSQuota'
 
         DNS:
-          type: object
-          properties:
-            Usage:
-              $ref: '#/components/schemas/DNSQuota'
-            Limits:
-              $ref: '#/components/schemas/DNSQuota'
+          $ref: '#/components/schemas/DNSQuota'
 
     DBaaSQuota:
       type: object

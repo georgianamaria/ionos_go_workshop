@@ -52,14 +52,8 @@ type DNSQuotaFields struct {
 
 // Quotas defines model for Quotas.
 type Quotas struct {
-	DBaaS *struct {
-		Limits *DBaaSQuota `json:"Limits,omitempty"`
-		Usage  *DBaaSQuota `json:"Usage,omitempty"`
-	} `json:"DBaaS,omitempty"`
-	DNS *struct {
-		Limits *DNSQuota `json:"Limits,omitempty"`
-		Usage  *DNSQuota `json:"Usage,omitempty"`
-	} `json:"DNS,omitempty"`
+	DBaaS *DBaaSQuota `json:"DBaaS,omitempty"`
+	DNS   *DNSQuota   `json:"DNS,omitempty"`
 }
 
 // ServerInterface represents all server handlers.
@@ -253,18 +247,18 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/6xWXXPSTBT+K5nzvpeRUKle5K5Wq1gFFDvOyHCx3RySbZM96e4JI9PJf3d2w4dArFC8",
-	"Isnuec7znE8eQVJRkkbNFuJHMGhL0hb9yztjyLgHSZpRs3tk/MlRmQul3ZuVGRbCf1+UCDFYNkqnUNd1",
-	"CAlaaVTJijTEcDHqB1LkeYAetQ7hS0Us7A6+KMtcSeGMojtLO17+NziDGP6LNqyj5tRGS7g211JWRZUL",
-	"xiR48LeCGZnAkbFo5kqiMwuXfjyjt2+EGHtE91YaKtGwasLySRWqidZTdDYIVwrzxDrFN1akeLxhHYLB",
-	"h0oZTCCeLFHCFY9puAo+3d6hZOdoD2NPxOXoxv3MyBSCIQal+fU5rKGUZkzRp+kzFmQWh14mndJlXllG",
-	"Yw+0GZHl1KA90mzMZJbh/OvtnQhus2xhEPr4rLVvnLUGe3BipQyeVyeDk6tk8HSNfEVJJjk4HyhJJ8Is",
-	"fpDGQ40Ov7sjrzEM1xz3/LcJ3kycbaG+XU5v9Ge0uNfVlphTi+noMmpj0vrFoqyM4sXYATTUFGmyL5ju",
-	"0c/rWxQGzdUqox+/f4PlcHVQzekmwxlz2UxtpWfk7Len9xWyzNAGIk0NpntDPEjVHHUgpKRKczAzVASc",
-	"YdAfDobj4DKnKgkuRn3nT3HuHDZVEIyb0Q8hzNHYxle3c9bputBRiVqUCmLodbqdHoRQCs682ChDkXPm",
-	"HlPkfb4f/HEgM5T34JGMX2f9BGJ4j9ycQ7i9a192uwduWtRV4TpgeP1bjf957w6vnZ5XDXxbIaxpRM2+",
-	"rz1I9LDulVaV/ywre/FZNml7fJ4WsPoLEMJ59+xgvUdGZ9MBEE92an8yrad1c8XM/SqbPEJl8mWZx1GU",
-	"kxR5RpbjXq/Xg3pa/woAAP//xs3rpIMJAAA=",
+	"H4sIAAAAAAAC/6xVTXPTMBD9K56Fo4lTUjj4VgqFUEgCocMMmRxUeWOrtbWutM6Q6fi/M5KdhHxQXMop",
+	"drT79r2n9e49SCpK0qjZQnwPBm1J2qJ/eWcMGfcgSTNqdo+MPzkqc6G0e7Myw0L4/1clQgyWjdIp1HUd",
+	"QoJWGlWyIg0xnE2GgRR5HqBHrUP4UhELu4cvyjJXUrik6MbSXpXnBhcQw7NoyzpqTm3Uwh0rLWVVVLlg",
+	"TII7HxUsyASOjEWzVBJdWtjW8YzevhFi6hHdW2moRMOqseWTKlTj1kN0tggXCvPEOsVXVqT4+MQ6BIN3",
+	"lTKYQDxrUcI1j3m4Np+ub1CyK3SAcSDifHLlfhZkCsEQg9L8+hQ2UEozpuiv6TMWZFZdg0mndJ5XltHY",
+	"jjkTspwatI9MmzKZ1s6/Ru85uMvyCIPQ+7PRvi121OzREztl9G99Mnpyl4we7pGvKMkkne8DJelEmNUP",
+	"0tg1qXvsnrwmMdxwPKh/TPB24uwK9Z9L9++y9a7rBXnue1zctEFZGcWrqQtveCjSZF8w3aKfe9coDJqL",
+	"tTMfv3+Ddkg5qOZ061TGXDbTT+kFufzdKXiBLDO0gUhTg+nBMAxStUQdCCmp0hwsDBUBZxgMx6PxNDjP",
+	"qUqCs8nQ1VOcu4KNm8G0GaEQwhKNbWr1eye9vrOJStSiVBDDoNfvDSCEUnDmxUYZipwz95giH/L94I8D",
+	"maG8BY9k/FoYJhDDe+TmHMLdnfWy3++4sVBXheuk8eVvvfLn/TW+dHpeNfDHrn1DI2r2Zu1BortNzx1V",
+	"+d9u5cCfttmP+/OwgPUqDeG0f9JZ7yPd2X4BEM/2en82r+d1E2KWfiXM7qEyedvmcRTlJEWekeV4MBgM",
+	"oJ7XvwIAAP//A7pPIssIAAA=",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file
